@@ -1,11 +1,38 @@
 let capture;
 
 function setup() {
-  createCanvas(100, 100);
-  capture = createCapture(VIDEO);
+  createCanvas(windowWidth, windowHeight);
+
+  capture = createCapture({
+    video: {
+      facingMode: "environment"
+    },
+    audio: false
+  });
+
   capture.hide();
 }
 
 function draw() {
-  image(capture, 0, 0, width, width * capture.height / capture.width);
+  background(0);
+
+  let scale = max(
+    width / capture.width,
+    height / capture.height
+  );
+
+  let w = capture.width * scale;
+  let h = capture.height * scale;
+
+  image(
+    capture,
+    (width - w) / 2,
+    (height - h) / 2,
+    w,
+    h
+  );
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
